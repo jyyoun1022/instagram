@@ -3,8 +3,9 @@ package org.codej.instagram.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.awt.*;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
