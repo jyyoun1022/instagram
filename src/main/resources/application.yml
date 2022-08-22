@@ -4,11 +4,17 @@ server:
     context-path: /
 
 spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
   datasource:
     url: jdbc:mysql://localhost:3306/instagram?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: yjy^^46232891
+
 
   jpa:
     open-in-view: false
@@ -21,11 +27,10 @@ spring:
       hibernate.enable_lazy_load_no_trans: true
       hibernate.format_sql: true
 
-
-  mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .jsp
+  security:
+   user:
+     name: codej
+     password: yjy^^46232891
 
   jackson:
     serialization:
@@ -36,8 +41,8 @@ spring:
       enabled: true
       max-file-size: 1MB
 
-
-
+file:
+  path: /Users/YOUNJY/Downloads/instagram/src/main/resources/static/images/
 
 
 
