@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,31 +23,37 @@ public class Images {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Lob
-    @Column(length=1024000)
-    private byte[] file;
+//    @Column(length=1024000)
+//    private byte[] file;
+//
+//    private String filePath;
+//    private String mimeType;
+//    private String fileName;
 
-    private String filePath;
-    private String mimeType;
-    private String fileName;
-
-    private String location;
-    private String caption;
+    private String location;//사진찍은 위치
+    private String caption;//사진 설명
+    private String postImage;//포스팅 사진 경로+이름
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    @JsonIgnoreProperties({"name", "website", "bio", "email" ,"phone" ,"gender" ,"createDate", "updateDate"})
+    @JsonIgnoreProperties({"password","images"})
     private Users user;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
-    @Builder.Default
-    @JsonManagedReference
-    private List<Tags> tags = new ArrayList<>();
+    //(1) Like List
+    @OneToMany(mappedBy = "image")
+    @Builder.Default private List<Tags> tags = new ArrayList<>();
 
-    @CreationTimestamp
-    private LocalDateTime regDate;
-    @CreationTimestamp
-    private LocalDateTime modDate;
+    @OneToMany(mappedBy = "image")
+    @JsonManagedReference
+    @Builder.Default private List<Likes> likes = new ArrayList<>();
+
+    @Transient
+    private int likeCount;
+
+    @CreationTimestamp // 자동으로 현재 시간이 세팅
+    private Timestamp createDate;
+    @CreationTimestamp // 자동으로 현재 시간이 세팅
+    private Timestamp updateDate;
 
 
 }

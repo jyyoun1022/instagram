@@ -2,10 +2,13 @@ package org.codej.instagram.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.awt.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,12 +21,7 @@ public class Tags {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private Users user;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="imageId")
     @JsonBackReference
     private Images image;
@@ -33,9 +31,7 @@ public class Tags {
     @CreationTimestamp
     private LocalDateTime modDate;
 
-    public void setImage(Images image) {
-        this.image = image;
-        this.image.getTags().add(this); //이 태그를 넣으면 image객체를 넣을 때 image쪽에 null이던 tag값이 들어간다.
-    }
+    @CreationTimestamp
+    private Timestamp createDate;
 
 }

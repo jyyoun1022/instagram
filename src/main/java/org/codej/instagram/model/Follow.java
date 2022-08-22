@@ -26,11 +26,11 @@ public class Follow {
 
     @ManyToOne
     @JoinColumn(name = "from_user")//DB에 FK 변수명이됨
-    @NonNull private Users from_user;
+    @NonNull private Users fromUser;
 
     @ManyToOne
     @JoinColumn(name = "to_user")
-    @NonNull private Users to_user;
+    @NonNull private Users toUser;
 
     @CreationTimestamp
     private LocalDateTime regDate;
