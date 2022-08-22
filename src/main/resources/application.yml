@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/cos?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/instagram?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: yjy^^46232891
@@ -19,10 +19,17 @@ spring:
     show-sql: true
     properties:
       hibernate.enable_lazy_load_no_trans: true
+      hibernate.format_sql: true
+
+
   mvc:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 
   servlet:
     multipart:
