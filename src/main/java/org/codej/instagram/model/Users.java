@@ -1,7 +1,11 @@
 package org.codej.instagram.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.bytebuddy.asm.Advice;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +15,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Users {
 
     @Id
@@ -36,8 +43,10 @@ public class Users {
 //	@OneToMany(mappedBy = "to_user")
 //	private List<Follow> to_user;
 
-    private LocalDateTime reg_date;
-    private LocalDateTime mod_date;
+    @CreationTimestamp
+    private LocalDateTime regDate;
+    @CreationTimestamp
+    private LocalDateTime modDate;
 
 
 

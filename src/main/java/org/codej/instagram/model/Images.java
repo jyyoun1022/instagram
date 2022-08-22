@@ -1,14 +1,21 @@
 package org.codej.instagram.model;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Images {
 
     @Id
@@ -19,19 +26,27 @@ public class Images {
     @Column(length=1024000)
     private byte[] file;
 
+    private String filePath;
+    private String mimeType;
+    private String fileName;
+
     private String location;
     private String caption;
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @JsonIgnoreProperties({"name", "website", "bio", "email" ,"phone" ,"gender" ,"createDate", "updateDate"})
     private Users user;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="image_id" )
-    private List<Tags> tags;
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @Builder.Default
+    @JsonManagedReference
+    private List<Tags> tags = new ArrayList<>();
 
-    private LocalDateTime reg_date;
-    private LocalDateTime mod_date;
+    @CreationTimestamp
+    private LocalDateTime regDate;
+    @CreationTimestamp
+    private LocalDateTime modDate;
 
 
 }
