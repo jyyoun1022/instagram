@@ -34,7 +34,8 @@ public class Users {
     private String email;
     private String phone;
     private String gender;
-    private String profileImage;
+    private String profileImage;//프로필 사진 경로+이름
+
 
     //findById() 때만 동작
     //findByUserInfo() 제외

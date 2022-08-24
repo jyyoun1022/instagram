@@ -1,5 +1,6 @@
 package org.codej.instagram.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -25,12 +26,17 @@ public class Follow {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "from_user")//DB에 FK 변수명이됨
+    @JoinColumn(name = "fromUserId")//DB에 FK 변수명이됨
+    @JsonIgnoreProperties({"images"})
     @NonNull private Users fromUser;
 
     @ManyToOne
-    @JoinColumn(name = "to_user")
+    @JoinColumn(name = "toUserId")
+    @JsonIgnoreProperties({"images"})
     @NonNull private Users toUser;
+
+    @Transient
+    private boolean matpal;
 
     @CreationTimestamp
     private LocalDateTime regDate;
