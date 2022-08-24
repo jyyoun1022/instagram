@@ -19,7 +19,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
@@ -40,6 +40,8 @@ spring:
     multipart:
       enabled: true
       max-file-size: 1MB
+
+
 
 file:
   path: /Users/YOUNJY/Downloads/instagram/src/main/resources/static/images/

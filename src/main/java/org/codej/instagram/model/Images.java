@@ -50,6 +50,8 @@ public class Images {
     @Transient
     private int likeCount;
 
+    @Transient
+    private boolean heart;
     @CreationTimestamp // 자동으로 현재 시간이 세팅
     private Timestamp createDate;
     @CreationTimestamp // 자동으로 현재 시간이 세팅

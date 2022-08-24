@@ -28,10 +28,14 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'javax.servlet:jstl'
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-}
+	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+	// https://mvnrepository.com/artifact/javax.servlet/jstl
+	implementation 'javax.servlet:jstl:1.2'
 
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-taglibs:5.7.3'
+
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }
