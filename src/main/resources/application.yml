@@ -8,7 +8,12 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
-
+    hiddenmethod:
+      filter:
+        enabled: true
+  devtools:
+    livereload:
+      enabled: true
   datasource:
     url: jdbc:mysql://localhost:3306/instagram?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -42,9 +47,8 @@ spring:
       max-file-size: 1MB
 
 
-
 file:
-  path: /Users/YOUNJY/Downloads/instagram/src/main/resources/static/images/
+  path: /Users/YOUNJY/Downloads/instagram/src/main/resources/static/upload/
 
 
 

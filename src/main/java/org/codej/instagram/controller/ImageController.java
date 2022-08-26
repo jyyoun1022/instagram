@@ -2,8 +2,11 @@ package org.codej.instagram.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.codej.instagram.Util.UtilParser;
 import org.codej.instagram.model.Images;
 import org.codej.instagram.model.Likes;
+import org.codej.instagram.model.Tags;
+import org.codej.instagram.model.Users;
 import org.codej.instagram.repository.ImageRepository;
 import org.codej.instagram.repository.LikesRepository;
 import org.codej.instagram.repository.TagRepository;
@@ -16,14 +19,19 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -34,7 +42,7 @@ public class ImageController {
     private final TagRepository tagRepository;
     private final LikesRepository likesRepository;
 
-    @Value("file.path")
+    @Value("${file.path}")
     private String fileRealPath;
 
     @GetMapping("/image/explore")
@@ -52,10 +60,11 @@ public class ImageController {
         }
 
         model.addAttribute("images", images);
-        return "/image/explore";
+        return "image/explore";
     }
     @PostMapping("/image/like/{id}")
-    public @ResponseBody String imageLike(@PathVariable int id,
+    @ResponseBody
+    public String imageLike(@PathVariable int id,
                                           @AuthenticationPrincipal CustomUserDetails userDetails){
         Likes oldLike = likesRepository.findByUserIdAndImageId(userDetails.getUser().getId(), id);
 
@@ -82,7 +91,8 @@ public class ImageController {
     }
 
     @GetMapping("/image/feed/scroll")
-    public @ResponseBody List<Images> imageFeedScroll(@AuthenticationPrincipal CustomUserDetails userDetails,
+    @ResponseBody
+    public List<Images> imageFeedScroll(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                       @PageableDefault(size = 3,sort = "id",direction = Sort.Direction.DESC)Pageable pageable,
                                                       Model model){
 
@@ -99,6 +109,70 @@ public class ImageController {
         }
         return images;
     }
+    @GetMapping({"/","/image/feed"})
+
+    public String imageFeed(@AuthenticationPrincipal CustomUserDetails userDetails,
+                            @PageableDefault(size = 3,sort = "id",direction = Sort.Direction.DESC)Pageable pageable,
+                            Model model){
+        //내가 팔로우한 친구들의 사진
+        Page<Images> pageImages = imageRepository.findImage(userDetails.getUser().getId(), pageable);
+        List<Images> images = pageImages.getContent();
+
+        for (Images item : images) {
+            int likeCount = likesRepository.countByImageId(item.getId());
+            item.setLikeCount(likeCount);
+        }
+        model.addAttribute("images",images);
+
+        return "image/feed";
+    }
+
+    @GetMapping("/image/upload")
+    public String imageUpload(){
+        return "image/image_upload";
+    }
+
+    @PostMapping("/image/uploadProc")
+    public String imageUploadProc(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                  @RequestParam("file")MultipartFile file,
+                                  @RequestParam("caption")String caption,
+                                  @RequestParam("location")String location,
+                                  @RequestParam("tags")String tags,
+                                  HttpSession session) throws IOException {
+
+        //이미지 업로드 수행
+        UUID uuid = UUID.randomUUID();
+        String uuidFilename = uuid + "_" + file.getOriginalFilename();
+        Path filePath = Paths.get(fileRealPath + uuidFilename);
+        Files.write(filePath,file.getBytes());
+        log.info("fileRealPath : {}",fileRealPath);
+        log.info("session : {}",session.getServletContext().getContext("/"));
+
+        Users principal = userDetails.getUser();
+
+        Images images = new Images();
+        images.setCaption(caption);
+        images.setLocation(location);
+        images.setUser(principal);
+        images.setPostImage(uuidFilename);
+
+        imageRepository.save(images);
+
+        List<String> tagList = UtilParser.tagsParser(tags);
+
+        for (String tag : tagList) {
+            Tags t = new Tags();
+            t.setImage(images);
+            t.setName(tag);
+            tagRepository.save(t);
+            images.getTags().add(t);
+        }
+
+        return "redirect:/";
+
+
+    }
+
 
 
 

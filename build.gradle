@@ -32,6 +32,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/javax.servlet/jstl
 	implementation 'javax.servlet:jstl:1.2'
 
+
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-taglibs:5.7.3'
 

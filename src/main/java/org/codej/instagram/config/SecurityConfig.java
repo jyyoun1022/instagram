@@ -9,8 +9,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity//스프링 시큐리티 필터에 등록하는 어노테이션
@@ -28,9 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.cors().disable();
+        http.cors();
         http.authorizeRequests()
-                .antMatchers("/user/**", "/follow/**", "/image/**","/test/home","/")
+                .antMatchers("/user/**", "/follow/**", "/image/**","/")
                 .authenticated()
                 .anyRequest()
                 .permitAll()
@@ -38,8 +45,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/auth/login")
                 .loginProcessingUrl("/auth/loginProc")
-                .defaultSuccessUrl("/");
+                .successHandler(new AuthenticationSuccessHandler() {
 
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                        Authentication authentication) throws IOException, ServletException {
+                        response.sendRedirect("/");
+                    }
+                });
 
 
     }

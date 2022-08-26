@@ -55,16 +55,17 @@
 				</div>
 				
 				<ul class="profile__stats">
-					<li class="profile__stat"><span class="profile__stat-number">${imageCount}</span> 게시물</li>
-					<li class="profile__stat"><span class="profile__stat-number">${followerCount} </span><a href="/follow/follower/${user.id}">팔로워</a></li>
-					<li class="profile__stat"><span class="profile__stat-number">${followCount} </span><a href="/follow/follow/${user.id}">팔로우</a></li>
+					<li class="profile__stat">게시물<span class="profile__stat-number">${imageCount}</span> </li>
+					<li class="profile__stat"><a href="/follow/follower/${user.id}">팔로워</a><span class="profile__stat-number">${followerCount} </span></li>
+					<li class="profile__stat"> <a href="/follow/follow/${user.id}">팔로우</a><span class="profile__stat-number">${followCount}</span></li>
 				</ul>
 				
 				<div class="profile__bio">
-					<p class="profile__fullname">${user.name }</p>					
-					<p>${user.bio }</p> 
+					<p class="profile__fullname">${user.name}</p>
+					<p>${user.bio}</p>
 					<p><a href="${user.website}" class="profile__link">
 						${user.website}</a></p>
+					<p>${user.phone}</p>
 				</div>
 			</div>
 		</header>
@@ -72,9 +73,9 @@
 		<div class="profile__photo-grid">
 				
 				<!-- 유저가 업로드한 Feed 사진 -->
-				<c:forEach var="image" items="${user.img}">
+				<c:forEach var="image" items="${user.images}">
 					<div class="profile__photo">
-						<a href="image-detail.html"> <img src="/upload/${image.postImage}"></a>
+						<a href="image-detail.html"><img src="/upload/${image.postImage}"></a>
 						<div class="profile__photo-overlay">
 							<span class="profile__photo-stat"> <i class="fa fa-heart"></i> ${image.likeCount}</span> 
 							<span class="profile__photo-stat"> <i class="fa fa-comment"></i> 22</span>

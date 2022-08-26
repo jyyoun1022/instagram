@@ -33,14 +33,11 @@ public class UserController {
     private final FollowRepository followRepository;
     private final LikesRepository likesRepository;
 
-    @Value("file.path")
+    @Value("${file.path}")
     private String fileRealPath;
 
 
-    @GetMapping("/")
-    public String home(){
-        return "auth/join";
-    }
+
     @GetMapping("/auth/login")
     public String authLogin(){
         return "/auth/login";
@@ -67,7 +64,7 @@ public class UserController {
      * 4. User Object(Image (likeCount) collection)
      * 5. followCheck follow YN ( 1 : follow , !1 : unfollow)
      */
-    @GetMapping("/user/{id}/")
+    @GetMapping("/user/{id}")
     public String profile(@PathVariable int id,
                           @AuthenticationPrincipal CustomUserDetails userDetails,
                           Model model){
@@ -96,8 +93,9 @@ public class UserController {
 
         //5.
         Users principal = userDetails.getUser();
-
-        int followCheck = followRepository.countByFromUserIdAndToUserId(principal.getId(), id);
+        Integer followCheck = followRepository.countDistinctByFromUserIdAndToUserId(principal.getId(), id);
+        log.info("principal : {}",principal.getId());
+        log.info("id : {}",id);
         log.info("followCheck : {}",followCheck);
         model.addAttribute("followCheck",followCheck);
 
@@ -155,7 +153,7 @@ public class UserController {
         //다시 영속화 및 flush
         userRepository.save(users);
 
-        return "redirect:/user" + userDetails.getUser().getId();
+        return "redirect:/user/" + userDetails.getUser().getId();
 
     }
 

@@ -12,6 +12,6 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Images,Integer> {
     List<Images> findByUserId(int UserId);
 
-    @Query(value = "select * from image where userId in (select toUserId from follow where fromUserId = ?1) or userId = ?1", nativeQuery = true)
+    @Query(value = "select * from images where userId in (select toUserId from follow where fromUserId = ?1) or userId = ?1", nativeQuery = true)
     Page<Images> findImage(int userId, Pageable pageable);
 }

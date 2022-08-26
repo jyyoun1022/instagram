@@ -35,7 +35,7 @@ public class Images {
     private String postImage;//포스팅 사진 경로+이름
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="userId")
     @JsonIgnoreProperties({"password","images"})
     private Users user;
 

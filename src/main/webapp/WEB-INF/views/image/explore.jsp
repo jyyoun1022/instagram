@@ -20,7 +20,7 @@
   <main id="profile">
     <div class="profile__photo-grid">
     	<!-- 유저가 업로드한 Feed 사진 -->
-		<c:forEach var="image" items="${img}">
+		<c:forEach var="image" items="${images}">
 			<div class="profile__photo">
 				<a href="/user/${image.user.id}"> <img src="/upload/${image.postImage}">	
 					<div class="profile__photo-overlay">

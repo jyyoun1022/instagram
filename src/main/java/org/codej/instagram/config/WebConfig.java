@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         WebMvcConfigurer.super.addResourceHandlers(registry);
 
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:///"+fileRealPath).setCachePeriod(3600)
+        registry.addResourceHandler("/static/upload/**").addResourceLocations("file:///"+fileRealPath).setCachePeriod(3600)
                 .resourceChain(true).addResolver(new PathResourceResolver());
     }
 
@@ -24,6 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.addCorsMappings(registry);
         registry.addMapping("/**")
                 .allowedOrigins("*")
+                .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET", "POST", "OPTIONS", "PUT")
                 .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method","Access-Control-Request-Headers")
                 .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")

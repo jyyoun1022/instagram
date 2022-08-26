@@ -36,7 +36,7 @@ public class Follow {
     @NonNull private Users toUser;
 
     @Transient
-    private boolean matpal;
+    private boolean followState;
 
     @CreationTimestamp
     private LocalDateTime regDate;

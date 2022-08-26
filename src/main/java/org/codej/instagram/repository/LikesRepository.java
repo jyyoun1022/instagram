@@ -15,6 +15,6 @@ public interface LikesRepository extends JpaRepository<Likes,Integer> {
     int countByImageId(int imageId);
 
     //내 이미지를 좋아요 하는 알림 정보
-    @Query(value = "select * from likes where imageID in (select id from image where userId=?1) order by id desc limit 5;",nativeQuery = true)
+    @Query(value = "select * from likes where imageId in (select id from images where userId=?1) order by id desc limit 5;",nativeQuery = true)
     List<Likes> findLikeNotification(int userId);
 }

@@ -13,7 +13,7 @@ $(window).scroll(function() {
 function make_feed_box(image){
     let feed_box = `<div class="photo u-default-box">`;
 	feed_box += `<header class="photo__header">`;	
-	feed_box += `<img src="/upload/${image.user.profileImage}" onerror="this.onerror=null; this.src='/images/avatar.jpg'"/>`;
+	feed_box += `<img src="/upload/${image.user.profileImage}" onerror="this.onerror=null; this.src='/img/avatar.jpg'"/>`;
 	feed_box += `<div class="photo_user_info">`;
 	feed_box += `<span class="photo__username">${image.user.username}</span>`;
 	feed_box += `<span class="photo__location">${image.location}</span></div></header>`;

@@ -2,6 +2,7 @@ package org.codej.instagram.repository;
 
 import org.codej.instagram.model.Follow;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -13,7 +14,8 @@ public interface FollowRepository extends JpaRepository<Follow,Integer> {
     int deleteByFromUserIdAndToUserId(int fromUserId, int toUserId);
 
     //follow YN
-    int countByFromUserIdAndToUserId(int fromUserId, int toUserId);
+    Integer countDistinctByFromUserIdAndToUserId(int fromUserId, int toUserId);
+
 
     //follow List
     List<Follow> findByFromUserId(int fromUserId);
